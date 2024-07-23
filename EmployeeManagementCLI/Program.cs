@@ -10,14 +10,14 @@ namespace EmployeeManagementCLI
     {
         static void Main(string[] args)
         {
-            var jsonService = new JsonService("Employees.json");
-            var employeeService = new EmployeeService();
+            //var jsonService = new JsonService("Employees.json");
+            ////var employeeService = new EmployeeService();
 
-            var employees = employeeService.CreateMockEmployees();
+            //var employees = employeeService.CreateMockEmployees();
 
-            jsonService.WriteModel(employees);
+            //jsonService.WriteModel(employees);
 
-            var newEmployees = jsonService.ReadModel<Employees>();
+            //var newEmployees = jsonService.ReadModel<Employees>();
         }
     }
 }

@@ -22,6 +22,8 @@ namespace EmployeeManagementCLI.Services
 
         public void WriteModel<T>(T model) where T : class
         {
+            CreateDirectoryIfNotExist();
+
             using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
             {
                 JsonSerializer.Serialize(fs, model);
@@ -38,9 +40,21 @@ namespace EmployeeManagementCLI.Services
 
         public async Task WriteModelAsync<T>(T model) where T : class
         {
+            CreateDirectoryIfNotExist();
+
             using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
             {
                 await JsonSerializer.SerializeAsync(fs, model);
+            }
+        }
+
+        private void CreateDirectoryIfNotExist()
+        {
+            var directoryPath = Path.GetDirectoryName(JsonPath);
+
+            if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
             }
         }
     }
