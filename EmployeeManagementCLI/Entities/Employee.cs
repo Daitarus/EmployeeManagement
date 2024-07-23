@@ -1,8 +1,9 @@
-﻿namespace EmployeeManagementCLI.Models
+﻿using EmployeeManagementCLI.Entities.Base;
+
+namespace EmployeeManagementCLI.Entities
 {
-    public class Employee
+    public class Employee : Entity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal SalaryPerHous { get; set; }
