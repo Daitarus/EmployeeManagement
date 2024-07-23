@@ -1,6 +1,6 @@
-﻿namespace EmployeeManagementCLI.Domain.Services.Interfaces
+﻿namespace EmployeeManagementCLI.Data.Handlers.Interfaces
 {
-    public interface IRecorderService
+    public interface IRecorderHandler
     {
         public T? ReadModel<T>() where T : class;
 

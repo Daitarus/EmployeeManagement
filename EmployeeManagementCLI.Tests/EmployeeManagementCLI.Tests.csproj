@@ -20,11 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmployeeManagementCLI.Console\EmployeeManagementCLI.Console.csproj" />
+    <ProjectReference Include="..\EmployeeManagementCLI.Data\EmployeeManagementCLI.Data.csproj" />
     <ProjectReference Include="..\EmployeeManagementCLI.Domain\EmployeeManagementCLI.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DomainTests\" />
   </ItemGroup>
 
 </Project>

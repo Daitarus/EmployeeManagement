@@ -1,15 +1,16 @@
-﻿using EmployeeManagementCLI.Domain.Entities;
-using EmployeeManagementCLI.Domain.Models;
-using EmployeeManagementCLI.Domain.Services.Interfaces;
+﻿using EmployeeManagementCLI.Data.Contexts.Interfaces;
+using EmployeeManagementCLI.Data.Entities;
+using EmployeeManagementCLI.Data.Handlers.Interfaces;
+using EmployeeManagementCLI.Data.Models;
 
-namespace EmployeeManagementCLI.Domain.Services
+namespace EmployeeManagementCLI.Data.Context
 {
-    public class EmployeeService : IRepositoryService<Employee>
+    public class EmployeeContext : IContext<Employee>
     {
-        private readonly IRecorderService _recorderService;
+        private readonly IRecorderHandler _recorderService;
         private Employees _employees;
 
-        public EmployeeService(IRecorderService recorderService)
+        public EmployeeContext(IRecorderHandler recorderService)
         {
             _recorderService = recorderService;
             _employees = _recorderService.ReadModel<Employees>() ?? new Employees();
@@ -32,14 +33,12 @@ namespace EmployeeManagementCLI.Domain.Services
         public void AddEntity(Employee entity)
         {
             _employees.EmployeesList.Add(entity);
-            SaveChanges();
         }
 
         public void DeleteEntity(int id)
         {
             var deleteEntity = _employees.EmployeesList.Where(e => e.Id == id).First();
             _employees.EmployeesList.Remove(deleteEntity);
-            SaveChanges();
         }
 
         public Employee GetEntity(int id)
@@ -47,19 +46,23 @@ namespace EmployeeManagementCLI.Domain.Services
             return _employees.EmployeesList.Where(e => e.Id == id).First();
         }
 
+        public IEnumerable<Employee> GetAllEntities()
+        {
+            return _employees.EmployeesList;
+        }
+
         public void UpdateEntity(Employee entity)
         {
             var updatableEntity = _employees.EmployeesList.Where(e => e.Id == entity.Id).First();
             updatableEntity = entity;
-            SaveChanges();
         }
 
-        private void SaveChanges()
+        public void SaveChanges()
         {
             _recorderService.WriteModel(_employees);
         }
 
-        private async Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await _recorderService.WriteModelAsync(_employees);
         }

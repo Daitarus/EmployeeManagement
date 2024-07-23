@@ -1,6 +1,6 @@
-﻿using EmployeeManagementCLI.Domain.Services;
+﻿using EmployeeManagementCLI.Data.Handlers;
 
-namespace EmployeeManagementCLI.Tests.DomainTests
+namespace EmployeeManagementCLI.Tests.DataTests
 {
     [TestClass]
     public class JsonServiceTest
@@ -10,7 +10,7 @@ namespace EmployeeManagementCLI.Tests.DomainTests
         public void Write_MockModel1()
         {
             var path = "Write_MockModel1.json";
-            var jsonService = new JsonService(path);
+            var jsonService = new JsonHandler(path);
             var model = new MockModel1();
 
             jsonService.WriteModel(model);
@@ -24,7 +24,7 @@ namespace EmployeeManagementCLI.Tests.DomainTests
         public void Write_MockModel2()
         {
             var path = "Write_MockModel2.json";
-            var jsonService = new JsonService(path);
+            var jsonService = new JsonHandler(path);
             var model = new MockModel2()
             {
                 IntField = 2,
@@ -42,7 +42,7 @@ namespace EmployeeManagementCLI.Tests.DomainTests
         public void Write_MockModel3()
         {
             var path = "Write_MockModel3.json";
-            var jsonService = new JsonService(path);
+            var jsonService = new JsonHandler(path);
 
             var model2_1 = new MockModel2()
             {
@@ -80,7 +80,7 @@ namespace EmployeeManagementCLI.Tests.DomainTests
         public void Write_MockModel2_No_Directory()
         {
             var path = "NoDirectpry\\Write_MockModel2.json";
-            var jsonService = new JsonService(path);
+            var jsonService = new JsonHandler(path);
             var model = new MockModel2()
             {
                 IntField = 2,

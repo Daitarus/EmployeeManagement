@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagementCLI.Domain.Entities.Base
+﻿namespace EmployeeManagementCLI.Data.Entities.Base
 {
     public class Entity
     {

@@ -1,18 +1,18 @@
-﻿using EmployeeManagementCLI.Domain.Services.Interfaces;
+﻿using EmployeeManagementCLI.Data.Handlers.Interfaces;
 using System.Text.Json;
 
-namespace EmployeeManagementCLI.Domain.Services
+namespace EmployeeManagementCLI.Data.Handlers
 {
-    public class JsonService : IRecorderService
+    public class JsonHandler : IRecorderHandler
     {
         public string JsonPath { private get; set; }
 
-        public JsonService(string jsonPath)
+        public JsonHandler(string jsonPath)
         {
             JsonPath = jsonPath;
         }
 
-        public T? ReadModel<T>() where T: class
+        public T? ReadModel<T>() where T : class
         {
             using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
             {
