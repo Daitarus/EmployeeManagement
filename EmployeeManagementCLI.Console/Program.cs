@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagementCLI
+﻿namespace EmployeeManagementCLI.Console
 {
     internal class Program
     {
