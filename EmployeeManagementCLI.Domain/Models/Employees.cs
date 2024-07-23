@@ -1,6 +1,6 @@
-﻿using EmployeeManagementCLI.Entities;
+﻿using EmployeeManagementCLI.Domain.Entities;
 
-namespace EmployeeManagementCLI.Models
+namespace EmployeeManagementCLI.Domain.Models
 {
     public class Employees
     {

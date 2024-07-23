@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagementCLI.Services.Interfaces
+﻿namespace EmployeeManagementCLI.Domain.Services.Interfaces
 {
     public interface IRecorderService
     {

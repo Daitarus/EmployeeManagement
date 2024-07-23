@@ -1,6 +1,6 @@
-﻿using EmployeeManagementCLI.Services;
+﻿using EmployeeManagementCLI.Domain.Services;
 
-namespace EmployeeManagementCLI.Tests.SevicesTests
+namespace EmployeeManagementCLI.Tests.DomainTests
 {
     [TestClass]
     public class JsonServiceTest

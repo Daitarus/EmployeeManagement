@@ -1,6 +1,6 @@
-﻿using EmployeeManagementCLI.Entities.Base;
+﻿using EmployeeManagementCLI.Domain.Entities.Base;
 
-namespace EmployeeManagementCLI.Services.Interfaces
+namespace EmployeeManagementCLI.Domain.Services.Interfaces
 {
     public interface IRepositoryService<T> where T : Entity
     {

@@ -1,10 +1,4 @@
-﻿using EmployeeManagementCLI.Models;
-using EmployeeManagementCLI.Services;
-using System;
-using System.CommandLine;
-using System.Text.Json;
-
-namespace EmployeeManagementCLI
+﻿namespace EmployeeManagementCLI
 {
     internal class Program
     {

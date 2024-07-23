@@ -1,7 +1,7 @@
-﻿using EmployeeManagementCLI.Services.Interfaces;
+﻿using EmployeeManagementCLI.Domain.Services.Interfaces;
 using System.Text.Json;
 
-namespace EmployeeManagementCLI.Services
+namespace EmployeeManagementCLI.Domain.Services
 {
     public class JsonService : IRecorderService
     {

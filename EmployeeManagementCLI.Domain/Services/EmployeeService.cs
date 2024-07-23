@@ -1,8 +1,8 @@
-﻿using EmployeeManagementCLI.Entities;
-using EmployeeManagementCLI.Models;
-using EmployeeManagementCLI.Services.Interfaces;
+﻿using EmployeeManagementCLI.Domain.Entities;
+using EmployeeManagementCLI.Domain.Models;
+using EmployeeManagementCLI.Domain.Services.Interfaces;
 
-namespace EmployeeManagementCLI.Services
+namespace EmployeeManagementCLI.Domain.Services
 {
     public class EmployeeService : IRepositoryService<Employee>
     {
