@@ -1,9 +1,9 @@
-﻿using EmployeeManagementCLI.Models;
+﻿using EmployeeManagementCLI.Services.Interfaces;
 using System.Text.Json;
 
 namespace EmployeeManagementCLI.Services
 {
-    public class JsonService
+    public class JsonService : IRecorderService
     {
         public string JsonPath { private get; set; }
 
