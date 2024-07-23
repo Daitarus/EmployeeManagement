@@ -12,7 +12,23 @@ namespace EmployeeManagementCLI.Services
             JsonPath = jsonPath;
         }
 
-        public async Task<T?> ReadModel<T>() where T : class
+        public T? ReadModel<T>() where T: class
+        {
+            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            {
+                return JsonSerializer.Deserialize<T>(fs);
+            }
+        }
+
+        public void WriteModel<T>(T model) where T : class
+        {
+            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            {
+                JsonSerializer.Serialize(fs, model);
+            }
+        }
+
+        public async Task<T?> ReadModelAsync<T>() where T : class
         {
             using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
             {
@@ -20,7 +36,7 @@ namespace EmployeeManagementCLI.Services
             }
         }
 
-        public async Task WriteModel<T>(T model) where T : class
+        public async Task WriteModelAsync<T>(T model) where T : class
         {
             using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
             {
