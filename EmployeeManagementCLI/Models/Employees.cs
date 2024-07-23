@@ -2,6 +2,6 @@
 {
     public class Employees
     {
-        public Employee[] EmployeesArray { get; set; }
+        public List<Employee> EmployeesList { get; set; }
     }
 }

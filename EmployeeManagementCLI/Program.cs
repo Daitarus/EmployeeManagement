@@ -11,7 +11,7 @@ namespace EmployeeManagementCLI
         static async Task Main(string[] args)
         {
             var employeeService = new EmployeeService();
-            var employees = employeeService.CreateEmployees();
+            var employees = employeeService.CreateMockEmployees();
 
             using (var fs = new FileStream("Employees.json", FileMode.OpenOrCreate))
             {

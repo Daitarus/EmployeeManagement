@@ -4,7 +4,7 @@ namespace EmployeeManagementCLI.Services
 {
     public class EmployeeService
     {
-        public Employees CreateEmployees()
+        public Employees CreateMockEmployees()
         {
             var e1 = new Employee(1, "Name1", "LastName1", 3.1m);
             var e2 = new Employee(2, "Name2", "LastName2", 3.2m);
@@ -14,7 +14,7 @@ namespace EmployeeManagementCLI.Services
 
             return new Employees()
             {
-                EmployeesArray = [e1, e2, e3, e4, e5]
+                EmployeesList = [e1, e2, e3, e4, e5]
             };
         }
     }
