@@ -4,6 +4,6 @@ namespace EmployeeManagementCLI.Console.Commands.Factories.Interfaces
 {
     public interface ICommandFactory
     {
-        public Command Create(string[] args);
+        public Command? Create(string[] args);
     }
 }

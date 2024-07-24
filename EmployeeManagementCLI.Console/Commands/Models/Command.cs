@@ -37,6 +37,7 @@
 
     public enum ArgumentType
     {
+        Unknown,
         Id,
         FirstName,
         LastName,
