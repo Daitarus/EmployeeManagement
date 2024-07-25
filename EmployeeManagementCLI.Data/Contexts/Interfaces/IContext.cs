@@ -4,9 +4,9 @@ namespace EmployeeManagementCLI.Data.Contexts.Interfaces
 {
     public interface IContext<T> where T : Entity
     {
-        public void AddEntity(T entity);
+        public T AddEntity(T entity);
 
-        public void UpdateEntity(T entity);
+        public T? UpdateEntity(T entity);
 
         public T? GetEntity(int id);
 
