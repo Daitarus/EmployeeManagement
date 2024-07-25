@@ -16,20 +16,6 @@ namespace EmployeeManagementCLI.Data.Context
             _employees = _recorderService.ReadModel<Employees>() ?? new Employees();
         }
 
-        public Employees CreateMockEmployees()
-        {
-            var e1 = new Employee(1, "Name1", "LastName1", 3.1m);
-            var e2 = new Employee(2, "Name2", "LastName2", 3.2m);
-            var e3 = new Employee(3, "Name3", "LastName3", 3.3m);
-            var e4 = new Employee(4, "Name4", "LastName4", 3.4m);
-            var e5 = new Employee(5, "Name5", "LastName5", 3.5m);
-
-            return new Employees()
-            {
-                EmployeesList = [e1, e2, e3, e4, e5]
-            };
-        }
-
         public void AddEntity(Employee entity)
         {
             _employees.EmployeesList.Add(entity);
@@ -41,9 +27,9 @@ namespace EmployeeManagementCLI.Data.Context
             _employees.EmployeesList.Remove(deleteEntity);
         }
 
-        public Employee GetEntity(int id)
+        public Employee? GetEntity(int id)
         {
-            return _employees.EmployeesList.Where(e => e.Id == id).First();
+            return _employees.EmployeesList.Where(e => e.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Employee> GetAllEntities()
@@ -53,8 +39,12 @@ namespace EmployeeManagementCLI.Data.Context
 
         public void UpdateEntity(Employee entity)
         {
-            var updatableEntity = _employees.EmployeesList.Where(e => e.Id == entity.Id).First();
-            updatableEntity = entity;
+            var updatableEntity = _employees.EmployeesList.Where(e => e.Id == entity.Id).FirstOrDefault();
+
+            if (updatableEntity != null)
+            {
+                updatableEntity = entity;
+            }
         }
 
         public void SaveChanges()

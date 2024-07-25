@@ -8,7 +8,7 @@ namespace EmployeeManagementCLI.Data.Contexts.Interfaces
 
         public void UpdateEntity(T entity);
 
-        public T GetEntity(int id);
+        public T? GetEntity(int id);
 
         public IEnumerable<T> GetAllEntities();
 
