@@ -33,7 +33,10 @@ namespace EmployeeManagementCLI.Console
 
         public void ConfigurationService(IServiceCollection services)
         {
-            services.AddSingleton<IRecorderHandler, JsonHandler>(); //add jsonPath
+            var jsonPath = "EmployeesDB.json"; //test jsonPath
+
+            services.AddSingleton<IRecorderHandler>(new JsonHandler(jsonPath));
+
             services.AddSingleton<IContext<EmployeeEntity>, EmployeeContext>();
             services.AddSingleton<IEmployeeService, EmployeeService>();
 

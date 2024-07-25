@@ -19,9 +19,9 @@ namespace EmployeeManagementCLI.Console
         private static IConfigurationRoot GetConfiguration()
         {
             return new ConfigurationBuilder()
-              .AddJsonFile("appsettings.dev", true)
-              .AddJsonFile("appsettings.json")
-              .Build();
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.dev.json", true)
+                .Build();
         }
     }
 }

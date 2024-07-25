@@ -5,7 +5,7 @@ namespace EmployeeManagementCLI.Console.Container
 {
     public static class ServiceCollectionExtensions
     {
-        private const string ConfigureServicesMethodName = "ConfigureServices";
+        private const string ConfigureServicesMethodName = "ConfigurationService";
 
 
         public static IServiceCollection UseStartup<TStartup>(this IServiceCollection services, IConfiguration configuration)
