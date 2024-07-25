@@ -1,17 +1,27 @@
-﻿namespace EmployeeManagementCLI.Console
+﻿using EmployeeManagementCLI.Console.Application.Interfaces;
+using EmployeeManagementCLI.Console.Container;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace EmployeeManagementCLI.Console
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //var jsonService = new JsonService("Employees.json");
-            ////var employeeService = new EmployeeService();
+            var configuration = GetConfiguration();
+            var serviceProvider = new ServiceCollection().UseStartup<Startup>(configuration).BuildServiceProvider();
 
-            //var employees = employeeService.CreateMockEmployees();
+            var app = serviceProvider.GetRequiredService<IApplicationRunner>();
+            app.Run(args);
+        }
 
-            //jsonService.WriteModel(employees);
-
-            //var newEmployees = jsonService.ReadModel<Employees>();
+        private static IConfigurationRoot GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+              .AddJsonFile("appsettings.dev", true)
+              .AddJsonFile("appsettings.json")
+              .Build();
         }
     }
 }
