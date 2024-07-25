@@ -9,6 +9,7 @@ namespace EmployeeManagementCLI.Data.Context
     {
         private readonly IRecorderHandler _recorderService;
         private Employees _employees;
+        private int _changeCounter = 0;
 
         public EmployeeContext(IRecorderHandler recorderService)
         {
@@ -19,12 +20,18 @@ namespace EmployeeManagementCLI.Data.Context
         public void AddEntity(Employee entity)
         {
             _employees.EmployeesList.Add(entity);
+            _changeCounter++;
         }
 
         public void DeleteEntity(int id)
         {
-            var deleteEntity = _employees.EmployeesList.Where(e => e.Id == id).First();
-            _employees.EmployeesList.Remove(deleteEntity);
+            var deleteEntity = _employees.EmployeesList.Where(e => e.Id == id).FirstOrDefault();
+
+            if (deleteEntity != null)
+            {
+                _employees.EmployeesList.Remove(deleteEntity);
+                _changeCounter++;
+            }
         }
 
         public Employee? GetEntity(int id)
@@ -44,17 +51,26 @@ namespace EmployeeManagementCLI.Data.Context
             if (updatableEntity != null)
             {
                 updatableEntity = entity;
+                _changeCounter++;
             }
         }
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
             _recorderService.WriteModel(_employees);
+
+            var changeCounter = _changeCounter;
+            _changeCounter = 0;
+            return changeCounter;
         }
 
-        public async Task SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             await _recorderService.WriteModelAsync(_employees);
+
+            var changeCounter = _changeCounter;
+            _changeCounter = 0;
+            return changeCounter;
         }
     }
 }

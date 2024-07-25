@@ -14,8 +14,8 @@ namespace EmployeeManagementCLI.Data.Contexts.Interfaces
 
         public void DeleteEntity(int id);
 
-        public void SaveChanges();
+        public int SaveChanges();
 
-        public Task SaveChangesAsync();
+        public Task<int> SaveChangesAsync();
     }
 }
