@@ -5,14 +5,19 @@ namespace EmployeeManagementCLI.Console.Commands.Factories
 {
     public class CommandFactory : ICommandFactory
     {
-        public Command? Create(string[] args)
+        public Command Create(string[]? args)
         {
-            if(args.Length == 0) return null;
+            if (args == null || args.Length == 0)
+            {
+                return new Command(CommandType.Unknown, Array.Empty<CommandArgument>());
+            }
+            else
+            {
+                var commandName = args[0];
+                args = args[1..args.Length];
 
-            var commandName = args[0];
-            args = args[1..args.Length];
-
-            return new Command(ChoosingCommandType(commandName), CreateCommandArguments(args));
+                return new Command(ChoosingCommandType(commandName), CreateCommandArguments(args));
+            }
         }
 
         private CommandType ChoosingCommandType(string commandName)
