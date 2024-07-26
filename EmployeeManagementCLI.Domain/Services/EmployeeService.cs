@@ -40,8 +40,8 @@ namespace EmployeeManagementCLI.Domain.Services
                 employeeEntity = _context.AddEntity(employeeEntity);
                 _context.SaveChanges();
 
-                _logger?.LogInformation($"[{nameof(AddEmployee)}][Id = {employee.Id}]: Success!");
-                return new Message(ActionStatus.Success, $"Employee was added (Id = {employee.Id})");
+                _logger?.LogInformation($"[{nameof(AddEmployee)}][Id = {employeeEntity.Id}]: Success!");
+                return new Message(ActionStatus.Success, $"Employee was added (Id = {employeeEntity.Id})");
             }
             catch (Exception ex)
             {

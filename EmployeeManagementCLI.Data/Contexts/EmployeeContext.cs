@@ -14,18 +14,28 @@ namespace EmployeeManagementCLI.Data.Context
         public EmployeeContext(IRecorderHandler recorderService)
         {
             _recorderService = recorderService;
+
             _employees = _recorderService.ReadModel<Employees>() ?? new Employees();
         }
 
         public Employee AddEntity(Employee entity)
         {
-            var maxId = _employees.EmployeesList.Max(e => e.Id);
-            entity.Id = maxId++;
+            var employee = new Employee(entity);
 
-            _employees.EmployeesList.Add(entity);
+            if (_employees.EmployeesList.Count > 0)
+            {
+                var maxId = _employees.EmployeesList.Max(e => e.Id);
+                employee.Id = ++maxId;
+            }
+            else
+            {
+                employee.Id = 1;
+            }
+
+            _employees.EmployeesList.Add(employee);
             _changeCounter++;
 
-            return entity;
+            return employee;
         }
 
         public void DeleteEntity(int id)
