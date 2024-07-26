@@ -7,6 +7,11 @@ namespace EmployeeManagementCLI.Data.Handlers
     {
         public string JsonPath { private get; set; }
 
+        private JsonSerializerOptions _otions = new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        };
+
         public JsonHandler(string jsonPath)
         {
             JsonPath = jsonPath;
@@ -14,9 +19,16 @@ namespace EmployeeManagementCLI.Data.Handlers
 
         public T? ReadModel<T>() where T : class
         {
-            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            if (File.Exists(JsonPath))
             {
-                return JsonSerializer.Deserialize<T>(fs);
+                using (FileStream fs = new FileStream(JsonPath, FileMode.Open, FileAccess.Read))
+                {
+                    return JsonSerializer.Deserialize<T>(fs, _otions);
+                }
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -24,17 +36,24 @@ namespace EmployeeManagementCLI.Data.Handlers
         {
             CreateDirectoryIfNotExist();
 
-            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(JsonPath, FileMode.Create))
             {
-                JsonSerializer.Serialize(fs, model);
+                JsonSerializer.Serialize(fs, model, _otions);
             }
         }
 
         public async Task<T?> ReadModelAsync<T>() where T : class
         {
-            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            if (File.Exists(JsonPath))
             {
-                return await JsonSerializer.DeserializeAsync<T>(fs);
+                using (FileStream fs = new FileStream(JsonPath, FileMode.Open, FileAccess.Read))
+                {
+                    return await JsonSerializer.DeserializeAsync<T>(fs, _otions);
+                }
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -42,9 +61,9 @@ namespace EmployeeManagementCLI.Data.Handlers
         {
             CreateDirectoryIfNotExist();
 
-            using (FileStream fs = new FileStream(JsonPath, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(JsonPath, FileMode.Create))
             {
-                await JsonSerializer.SerializeAsync(fs, model);
+                await JsonSerializer.SerializeAsync(fs, model, _otions);
             }
         }
 
