@@ -56,7 +56,7 @@ namespace EmployeeManagementCLI.Console.Commands.Factories
 
             if(argumentParts.Length <= 1)
             {
-                return new CommandArgument(ArgumentType.Unknown, string.Empty);
+                return new CommandArgument(ArgumentType.Unknown, argumentString);
             }
 
             return new CommandArgument(ChoosingArgumentType(argumentParts[0]), argumentParts[1]);
