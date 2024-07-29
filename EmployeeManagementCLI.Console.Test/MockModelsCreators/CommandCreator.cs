@@ -28,6 +28,8 @@ namespace EmployeeManagementCLI.Console.Test.MockModelsCreators
         public static Command GetAll_command_no_args_model = new Command(CommandType.GetAll, []);
         public static Command Update_command_valid_args_model = new Command(CommandType.Update, [CommandArgumentCreator.Id_model_with_dataInt_positiv, CommandArgumentCreator.FirstName_model_with_data, CommandArgumentCreator.SalaryPerHour_model_with_dataDecimal_postitv]);
 
+        public static Command Full_Update_command_valid_args_model = new Command(CommandType.Update, [CommandArgumentCreator.Id_model_with_dataInt_positiv, CommandArgumentCreator.FirstName_model_with_data, CommandArgumentCreator.LastName_model_with_data, CommandArgumentCreator.SalaryPerHour_model_with_dataDecimal_postitv]);
+
         public static Command Get_Command_negativ_id_model = new Command(CommandType.Get, [CommandArgumentCreator.Id_model_with_dataInt_negativ]);
         public static Command Delete_Command_float_id_model = new Command(CommandType.Delete, [CommandArgumentCreator.Id_model_with_dataFloat]);
         public static Command Update_Command_zero_id_model = new Command(CommandType.Update, [CommandArgumentCreator.Id_model_with_dataInt_zero]);

@@ -1,6 +1,7 @@
 ﻿using EmployeeManagementCLI.Console.Commands.Handler.Interfaces;
 using EmployeeManagementCLI.Domain.Models;
 using EmployeeManagementCLI.Console.Commands.Models;
+using System.Globalization;
 
 namespace EmployeeManagementCLI.Console.Commands.Handler
 {
@@ -8,8 +9,9 @@ namespace EmployeeManagementCLI.Console.Commands.Handler
     {
         public Employee Convert(Command model)
         {
-            var employee = new Employee();
+            if (model == null) throw new ArgumentNullException(nameof(model));
 
+            var employee = new Employee();
             foreach(var argument in model.Arguments)
             {
                 TransferArgument(employee, argument);
@@ -39,7 +41,7 @@ namespace EmployeeManagementCLI.Console.Commands.Handler
         private decimal StringToDecimal(string str)
         {
             decimal d;
-            decimal.TryParse(str, out d);
+            decimal.TryParse(str, CultureInfo.InvariantCulture, out d);
             return d;
         }
     }
