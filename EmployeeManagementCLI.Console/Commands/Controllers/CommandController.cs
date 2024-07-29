@@ -26,6 +26,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string Add(Command command)
         {
+            if(command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.Add;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
@@ -36,6 +38,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string Delete(Command command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.Delete;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
@@ -46,6 +50,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string Get(Command command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.Get;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
@@ -56,6 +62,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string GetAll(Command command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.GetAll;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
@@ -65,6 +73,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string Unknown(Command command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.Unknown;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
@@ -74,6 +84,8 @@ namespace EmployeeManagementCLI.Console.Commands.Controllers
 
         public string Update(Command command)
         {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
             var validCommandType = CommandType.Update;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
