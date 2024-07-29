@@ -24,5 +24,7 @@
         public static string[] Get_command_valid_args_model = ["-get", "Id:14"];
         public static string[] GetAll_command_no_args_model = ["-getall"];
         public static string[] Update_command_valid_args_model = ["-update", "Id:14", "FirstName:testFirstName", "Salary:34.1241223"];
+
+        public static string[] Get_command_many_separation_args_model = ["-get", "Id:14:15:153"];
     }
 }

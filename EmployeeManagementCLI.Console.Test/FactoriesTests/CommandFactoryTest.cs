@@ -10,7 +10,7 @@ namespace EmployeeManagementCLI.Console.Test.FactoriesTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetTestUserArgsAndCommands), DynamicDataSourceType.Method)]
-        public void TestCommandFactoryForCommand(string[] args, Command answerCommand)
+        public void Test_CommandFactory_For_Command(string[] args, Command answerCommand)
         {
             ICommandFactory commandFactory = new CommandFactory();
             Command command = commandFactory.Create(args);
@@ -41,6 +41,8 @@ namespace EmployeeManagementCLI.Console.Test.FactoriesTests
             yield return new object?[] { InputArgsCreator.Get_command_valid_args_model, CommandCreator.Get_command_valid_args_model };
             yield return new object?[] { InputArgsCreator.GetAll_command_no_args_model, CommandCreator.GetAll_command_no_args_model };
             yield return new object?[] { InputArgsCreator.Update_command_valid_args_model, CommandCreator.Update_command_valid_args_model };
+
+            yield return new object?[] { InputArgsCreator.Get_command_many_separation_args_model, CommandCreator.Get_command_valid_args_model };
         }
     }
 }
