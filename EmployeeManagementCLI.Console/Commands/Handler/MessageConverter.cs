@@ -7,6 +7,8 @@ namespace EmployeeManagementCLI.Console.Commands.Handler
     {
         public string Convert(Message model)
         {
+            if(model == null) throw new ArgumentNullException(nameof(model));
+
             return model.Text;
         }
     }
