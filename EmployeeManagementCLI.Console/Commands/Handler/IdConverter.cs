@@ -7,8 +7,9 @@ namespace EmployeeManagementCLI.Console.Commands.Handler
     {
         public int Convert(Command model)
         {
-            int id = 0;
+            if(model == null) throw new ArgumentNullException(nameof(model));
 
+            int id = 0;
             foreach(var argument in model.Arguments)
             {
                 if (argument.Type == ArgumentType.Id)
