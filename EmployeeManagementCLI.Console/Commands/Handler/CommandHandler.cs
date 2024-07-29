@@ -15,6 +15,8 @@ namespace EmployeeManagementCLI.Console.Commands.Handler
 
         public string Execute(Command command)
         {
+            if(command == null) throw new ArgumentNullException(nameof(command));
+
             return command.Type switch
             {
                 CommandType.Add => _controller.Add(command),
