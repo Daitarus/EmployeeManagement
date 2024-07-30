@@ -9,12 +9,10 @@ namespace EmployeeManagementCLI.Data.Context
     {
         private readonly IRecorderHandler _recorderService;
         private Employees _employees;
-        private int _changeCounter = 1;
 
         public EmployeeContext(IRecorderHandler recorderService)
         {
             _recorderService = recorderService;
-
             _employees = _recorderService.ReadModel<Employees>() ?? new Employees();
         }
 
@@ -31,22 +29,22 @@ namespace EmployeeManagementCLI.Data.Context
             {
                 employee.Id = 1;
             }
-
             _employees.EmployeesList.Add(employee);
-            _changeCounter++;
 
             return employee;
         }
 
-        public void DeleteEntity(int id)
+        public bool DeleteEntity(int id)
         {
             var deleteEntity = _employees.EmployeesList.Where(e => e.Id == id).FirstOrDefault();
 
             if (deleteEntity != null)
             {
                 _employees.EmployeesList.Remove(deleteEntity);
-                _changeCounter++;
+                return true;
             }
+
+            return false;
         }
 
         public Employee? GetEntity(int id)
@@ -59,64 +57,53 @@ namespace EmployeeManagementCLI.Data.Context
             return _employees.EmployeesList;
         }
 
-        public Employee? UpdateEntity(Employee entity)
-        {
-            var updatableEntity = _employees.EmployeesList.Where(e => e.Id == entity.Id).FirstOrDefault();
+        //public Employee? UpdateEntity(Employee entity)
+        //{
+        //    var updatableEntity = _employees.EmployeesList.Where(e => e.Id == entity.Id).FirstOrDefault();
 
-            if (updatableEntity != null)
-            {
-                var сopiesQuantity = CopyModelFields(updatableEntity, entity);
+        //    if (updatableEntity != null)
+        //    {
+        //        var сopiesQuantity = CopyModelFields(updatableEntity, entity);
 
-                if (сopiesQuantity > 0) 
-                    _changeCounter++;
+        //        return updatableEntity;
+        //    }
 
-                return updatableEntity;
-            }
+        //    return null;
+        //}
 
-            return null;
-        }
-
-        public int SaveChanges()
+        public void SaveChanges()
         {
             _recorderService.WriteModel(_employees);
-
-            var changeCounter = _changeCounter;
-            _changeCounter = 0;
-            return changeCounter;
         }
 
-        public async Task<int> SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await _recorderService.WriteModelAsync(_employees);
-
-            var changeCounter = _changeCounter;
-            _changeCounter = 0;
-            return changeCounter;
         }
 
-        private int CopyModelFields(Employee originalEmployee, Employee newEmployee)
-        {
-            var сopiesQuantity = 0;
+        //private int CopyModelFields(Employee originalEmployee, Employee newEmployee)
+        //{
+        //    var сopiesQuantity = 0;
 
-            if(newEmployee.FirstName != null && newEmployee.FirstName != originalEmployee.FirstName)
-            {
-                originalEmployee.FirstName = newEmployee.FirstName;
-                сopiesQuantity++;
-            }
+        //    if(newEmployee.FirstName != null && newEmployee.FirstName != originalEmployee.FirstName)
+        //    {
+        //        originalEmployee.FirstName = newEmployee.FirstName;
+        //        сopiesQuantity++;
+        //    }
 
-            if (newEmployee.LastName != null && newEmployee.LastName != originalEmployee.LastName)
-            {
-                originalEmployee.LastName = newEmployee.LastName;
-                сopiesQuantity++;
-            }
+        //    if (newEmployee.LastName != null && newEmployee.LastName != originalEmployee.LastName)
+        //    {
+        //        originalEmployee.LastName = newEmployee.LastName;
+        //        сopiesQuantity++;
+        //    }
 
-            if (newEmployee.SalaryPerHous != null && newEmployee.SalaryPerHous != originalEmployee.SalaryPerHous)
-            {
-                originalEmployee.SalaryPerHous = newEmployee.SalaryPerHous;
-                сopiesQuantity++;
-            }
+        //    if (newEmployee.SalaryPerHous != null && newEmployee.SalaryPerHous != originalEmployee.SalaryPerHous)
+        //    {
+        //        originalEmployee.SalaryPerHous = newEmployee.SalaryPerHous;
+        //        сopiesQuantity++;
+        //    }
 
-            return сopiesQuantity;
-        }
+        //    return сopiesQuantity;
+        //}
     }
 }

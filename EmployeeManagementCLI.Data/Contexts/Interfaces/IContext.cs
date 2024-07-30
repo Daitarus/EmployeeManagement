@@ -6,16 +6,14 @@ namespace EmployeeManagementCLI.Data.Contexts.Interfaces
     {
         public T AddEntity(T entity);
 
-        public T? UpdateEntity(T entity);
-
         public T? GetEntity(int id);
 
         public IEnumerable<T> GetAllEntities();
 
-        public void DeleteEntity(int id);
+        public bool DeleteEntity(int id);
 
-        public int SaveChanges();
+        public void SaveChanges();
 
-        public Task<int> SaveChangesAsync();
+        public Task SaveChangesAsync();
     }
 }

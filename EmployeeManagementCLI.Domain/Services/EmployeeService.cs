@@ -54,18 +54,17 @@ namespace EmployeeManagementCLI.Domain.Services
         {
             try
             {
-                _context.DeleteEntity(id);
-                var changeCount = _context.SaveChanges();
-
-                if (changeCount == 0)
+                if (_context.DeleteEntity(id))
                 {
-                    _logger?.LogWarning($"[{nameof(DeleteEmployee)}][Id = {id}]: Warning: no data available!");
-                    return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
+                    _context.SaveChanges();
+
+                    _logger?.LogInformation($"[{nameof(DeleteEmployee)}][Id = {id}]: Success!");
+                    return new Message(ActionStatus.Success, $"Employee with Id = {id} was deleted!");
                 }
                 else
                 {
-                    _logger?.LogInformation($"[{nameof(DeleteEmployee)}][Id = {id}]: Success!");
-                    return new Message(ActionStatus.Success, $"Employee with Id = {id} was deleted!");
+                    _logger?.LogWarning($"[{nameof(DeleteEmployee)}][Id = {id}]: Warning: no data available!");
+                    return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
                 }
             }
             catch (Exception ex)
@@ -133,33 +132,48 @@ namespace EmployeeManagementCLI.Domain.Services
         {
             if (employee == null) throw new ArgumentNullException(nameof(employee));
 
-            if (string.IsNullOrEmpty(employee.FirstName) && string.IsNullOrEmpty(employee.LastName) && employee.SalaryPerHous == null)
-            {
-                _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: Warning: no updated data!");
-                return new Message(ActionStatus.NotSuccess, $"Warning: no updated data");
-            }
-
             try
             {
-                var employeeEntity = new Data.Entities.Employee()
+                var employeeEntity = _context.GetEntity(employee.Id);
+                if (employeeEntity != null)
                 {
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    SalaryPerHous = (decimal)employee.SalaryPerHous
-                };
+                    bool wasChanges = false;
 
-                employeeEntity = _context.AddEntity(employeeEntity);
-                var changeCount = _context.SaveChanges();
+                    if (!string.IsNullOrEmpty(employee.FirstName))
+                    {
+                        wasChanges = true;
+                        employeeEntity.FirstName = employee.FirstName;
+                    }
 
-                if (changeCount == 0)
-                {
-                    _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Warning: no data available!");
-                    return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
+                    if (!string.IsNullOrEmpty(employee.LastName))
+                    {
+                        wasChanges = true;
+                        employeeEntity.LastName = employee.LastName;
+                    }
+
+                    if (employee.SalaryPerHous != null)
+                    {
+                        wasChanges = true;
+                        employeeEntity.SalaryPerHous = (decimal)employee.SalaryPerHous;
+                    }
+
+                    if (wasChanges)
+                    {
+                        _context.SaveChanges();
+
+                        _logger?.LogInformation($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Success!");
+                        return new Message(ActionStatus.Success, $"Employee with Id = {employeeEntity.Id} was updated!");
+                    }
+                    else
+                    {
+                        _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Warning: no data available!");
+                        return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
+                    }
                 }
                 else
                 {
-                    _logger?.LogInformation($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Success!");
-                    return new Message(ActionStatus.Success, $"Employee with Id = {employeeEntity.Id} was updated!");
+                    _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: Warning: no updated data!");
+                    return new Message(ActionStatus.NotSuccess, $"Warning: no updated data");
                 }
             }
             catch (Exception ex)
