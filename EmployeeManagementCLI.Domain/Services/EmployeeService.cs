@@ -30,11 +30,18 @@ namespace EmployeeManagementCLI.Domain.Services
 
             try
             {
+                var salaryDecimal = (decimal)employee.SalaryPerHous;
+                if (salaryDecimal < 0)
+                {
+                    _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
+                    return new Message(ActionStatus.NotSuccess, $"Warning: Salary should be more than 0");
+                }
+
                 var employeeEntity = new Data.Entities.Employee()
                 {
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
-                    SalaryPerHous = (decimal)employee.SalaryPerHous 
+                    SalaryPerHous = salaryDecimal
                 };
 
                 employeeEntity = _context.AddEntity(employeeEntity);
@@ -153,8 +160,17 @@ namespace EmployeeManagementCLI.Domain.Services
 
                     if (employee.SalaryPerHous != null)
                     {
-                        wasChanges = true;
-                        employeeEntity.SalaryPerHous = (decimal)employee.SalaryPerHous;
+                        var salaryDecimal = (decimal)employee.SalaryPerHous;
+                        if (salaryDecimal < 0)
+                        {
+                            _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
+                            return new Message(ActionStatus.NotSuccess, $"Warning: Salary should be more than 0");
+                        }
+                        else
+                        {
+                            wasChanges = true;
+                            employeeEntity.SalaryPerHous = salaryDecimal;
+                        }
                     }
 
                     if (wasChanges)
