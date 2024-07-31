@@ -19,6 +19,10 @@ using EmployeeEntity = EmployeeManagementCLI.Data.Entities.Employee;
 using EmployeeModel = EmployeeManagementCLI.Domain.Models.Employee;
 using EmployeeManagementCLI.Console.Application.Interfaces;
 using EmployeeManagementCLI.Console.Application;
+using Serilog;
+using Serilog.Extensions.Logging;
+using EmployeeManagementCLI.Console.Settings;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagementCLI.Console
 {
@@ -26,16 +30,22 @@ namespace EmployeeManagementCLI.Console
     {
         public IConfiguration Configuration { get; }
 
+        private AppSettings _appSettings;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _appSettings = Configuration.Get<AppSettings>() ?? new AppSettings();
         }
 
         public void ConfigurationService(IServiceCollection services)
         {
-            var jsonPath = "EmployeesDB.json"; //test jsonPath
+            var serilog = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
+            var loggerFactory = new SerilogLoggerFactory(serilog);
 
-            services.AddSingleton<IRecorderHandler>(new JsonHandler(jsonPath));
+            services.AddSingleton<ILogger<EmployeeService>>(loggerFactory.CreateLogger<EmployeeService>());
+
+            services.AddSingleton<IRecorderHandler>(new JsonHandler(_appSettings.JsonHandlerPath));
 
             services.AddSingleton<IContext<EmployeeEntity>, EmployeeContext>();
             services.AddSingleton<IEmployeeService, EmployeeService>();

@@ -9,9 +9,9 @@ namespace EmployeeManagementCLI.Domain.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IContext<Data.Entities.Employee> _context;
-        private readonly ILogger? _logger;
+        private readonly ILogger<EmployeeService>? _logger;
 
-        public EmployeeService(IContext<Data.Entities.Employee> context, ILogger? logger = null)
+        public EmployeeService(IContext<Data.Entities.Employee> context, ILogger<EmployeeService>? logger = null)
         {
             _context = context;
             _logger = logger;
