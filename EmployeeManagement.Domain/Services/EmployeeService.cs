@@ -22,7 +22,7 @@ namespace EmployeeManagement.Domain.Services
         {
             if (employee == null) throw new ArgumentNullException(nameof(employee));
 
-            if(string.IsNullOrEmpty(employee.FirstName) || string.IsNullOrEmpty(employee.LastName) || employee.SalaryPerHous == null)
+            if(string.IsNullOrEmpty(employee.FirstName) || string.IsNullOrEmpty(employee.LastName) || employee.SalaryPerHour == null)
             {
                 _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: not all data is filled for action!");
                 return new Message(ActionStatus.NotSuccess, $"Warning: not all data is filled for action");
@@ -30,7 +30,7 @@ namespace EmployeeManagement.Domain.Services
 
             try
             {
-                var salaryDecimal = (decimal)employee.SalaryPerHous;
+                var salaryDecimal = (decimal)employee.SalaryPerHour;
                 if (salaryDecimal < 0)
                 {
                     _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
@@ -41,7 +41,7 @@ namespace EmployeeManagement.Domain.Services
                 {
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
-                    SalaryPerHous = salaryDecimal
+                    SalaryPerHour = salaryDecimal
                 };
 
                 employeeEntity = _context.AddEntity(employeeEntity);
@@ -158,9 +158,9 @@ namespace EmployeeManagement.Domain.Services
                         employeeEntity.LastName = employee.LastName;
                     }
 
-                    if (employee.SalaryPerHous != null)
+                    if (employee.SalaryPerHour != null)
                     {
-                        var salaryDecimal = (decimal)employee.SalaryPerHous;
+                        var salaryDecimal = (decimal)employee.SalaryPerHour;
                         if (salaryDecimal < 0)
                         {
                             _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
@@ -169,7 +169,7 @@ namespace EmployeeManagement.Domain.Services
                         else
                         {
                             wasChanges = true;
-                            employeeEntity.SalaryPerHous = salaryDecimal;
+                            employeeEntity.SalaryPerHour = salaryDecimal;
                         }
                     }
 
@@ -214,7 +214,7 @@ namespace EmployeeManagement.Domain.Services
             info.Append(employee.LastName);
 
             info.Append(", SalaryPerHour = ");
-            info.Append(employee.SalaryPerHous);
+            info.Append(employee.SalaryPerHour);
 
             return info.ToString();
         }

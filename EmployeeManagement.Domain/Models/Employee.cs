@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public decimal? SalaryPerHous { get; set; }
+        public decimal? SalaryPerHour { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -19,12 +19,12 @@
                    Id == other.Id &&
                    FirstName == other.FirstName &&
                    LastName == other.LastName &&
-                   SalaryPerHous == SalaryPerHous;
+                   SalaryPerHour == SalaryPerHour;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, FirstName, LastName, SalaryPerHous);
+            return HashCode.Combine(Id, FirstName, LastName, SalaryPerHour);
         }
     }
 }

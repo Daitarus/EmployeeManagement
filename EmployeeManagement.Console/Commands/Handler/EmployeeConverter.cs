@@ -27,7 +27,7 @@ namespace EmployeeManagement.Console.Commands.Handler
                 case ArgumentType.Id: { employee.Id = StringToInt(argument.Value); break; }
                 case ArgumentType.FirstName: { employee.FirstName = argument.Value; break; }
                 case ArgumentType.LastName: { employee.LastName = argument.Value; break; }
-                case ArgumentType.SalaryPerHour: { employee.SalaryPerHous = StringToDecimal(argument.Value); break; }
+                case ArgumentType.SalaryPerHour: { employee.SalaryPerHour = StringToDecimal(argument.Value); break; }
             };
         }
 

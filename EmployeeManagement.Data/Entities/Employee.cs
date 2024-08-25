@@ -6,7 +6,7 @@ namespace EmployeeManagement.Data.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public decimal SalaryPerHous { get; set; }
+        public decimal SalaryPerHour { get; set; }
 
         public Employee() { }
 
@@ -15,7 +15,7 @@ namespace EmployeeManagement.Data.Entities
             Id = employee.Id;
             FirstName = employee.FirstName;
             LastName = employee.LastName;
-            SalaryPerHous = employee.SalaryPerHous;
+            SalaryPerHour = employee.SalaryPerHour;
         }
     }
 }
