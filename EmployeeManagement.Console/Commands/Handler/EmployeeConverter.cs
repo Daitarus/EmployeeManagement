@@ -5,13 +5,13 @@ using System.Globalization;
 
 namespace EmployeeManagement.Console.Commands.Handler
 {
-    public class EmployeeConverter : IModelConverter<Command, Employee>
+    public class EmployeeConverter : IModelConverter<Command, EmployeeDto>
     {
-        public Employee Convert(Command model)
+        public EmployeeDto Convert(Command model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var employee = new Employee();
+            var employee = new EmployeeDto();
             foreach(var argument in model.Arguments)
             {
                 TransferArgument(employee, argument);
@@ -20,7 +20,7 @@ namespace EmployeeManagement.Console.Commands.Handler
             return employee;
         }
 
-        private void TransferArgument(Employee employee, CommandArgument argument)
+        private void TransferArgument(EmployeeDto employee, CommandArgument argument)
         {
             switch (argument.Type)
             {

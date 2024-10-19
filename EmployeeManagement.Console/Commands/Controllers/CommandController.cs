@@ -9,12 +9,12 @@ namespace EmployeeManagement.Console.Commands.Controllers
     public class CommandController : ICommandController
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IModelConverter<Command, Employee> _employeeConverter;
+        private readonly IModelConverter<Command, EmployeeDto> _employeeConverter;
         private readonly IModelConverter<Command, int> _idConverter;
         private readonly IModelConverter<Message, string> _messageConverter;
 
         public CommandController(IEmployeeService employeeService, 
-            IModelConverter<Command, Employee> employeeConverter, 
+            IModelConverter<Command, EmployeeDto> employeeConverter, 
             IModelConverter<Command, int> idConverter, 
             IModelConverter<Message, string> messageConverter)
         {
@@ -32,7 +32,7 @@ namespace EmployeeManagement.Console.Commands.Controllers
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
             var employee = _employeeConverter.Convert(command);
-            var message = _employeeService.AddEmployee(employee);
+            var message = _employeeService.Create(employee);
             return _messageConverter.Convert(message);
         }
 
@@ -44,7 +44,7 @@ namespace EmployeeManagement.Console.Commands.Controllers
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
             var id = _idConverter.Convert(command);
-            var message = _employeeService.DeleteEmployee(id);
+            var message = _employeeService.Delete(id);
             return _messageConverter.Convert(message);
         }
 
@@ -67,7 +67,7 @@ namespace EmployeeManagement.Console.Commands.Controllers
             var validCommandType = CommandType.GetAll;
             if (command.Type != validCommandType) throw new ArgumentException($"Command Type must be {validCommandType}", nameof(command));
 
-            var message = _employeeService.GetAllEmployees();
+            var message = _employeeService.GetAll();
             return _messageConverter.Convert(message);
         }
 

@@ -14,15 +14,15 @@ namespace EmployeeManagement.Console.Test.ConsoleHandlersTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_EmployeeConverter_For_Null(Command? command)
         {
-            IModelConverter<Command, Employee> modelConverter = new EmployeeConverter();
+            IModelConverter<Command, EmployeeDto> modelConverter = new EmployeeConverter();
             var result = modelConverter.Convert(command);
         }
 
         [DataTestMethod]
         [DynamicData(nameof(GetTestCommands), DynamicDataSourceType.Method)]
-        public void Test_EmployeeConverter(Command command, Employee answerEmployee)
+        public void Test_EmployeeConverter(Command command, EmployeeDto answerEmployee)
         {
-            IModelConverter<Command, Employee> modelConverter = new EmployeeConverter();
+            IModelConverter<Command, EmployeeDto> modelConverter = new EmployeeConverter();
             var result = modelConverter.Convert(command);
             Assert.AreEqual(result, answerEmployee);
         }

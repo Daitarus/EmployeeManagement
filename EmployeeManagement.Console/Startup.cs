@@ -16,7 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
 using EmployeeEntity = EmployeeManagement.Data.Entities.Employee;
-using EmployeeModel = EmployeeManagement.Domain.Models.Employee;
+using EmployeeModel = EmployeeManagement.Domain.Models.EmployeeDto;
 using EmployeeManagement.Console.Application.Interfaces;
 using EmployeeManagement.Console.Application;
 using Serilog;

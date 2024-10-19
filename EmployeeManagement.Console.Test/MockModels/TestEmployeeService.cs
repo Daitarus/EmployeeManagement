@@ -5,17 +5,17 @@ namespace EmployeeManagement.Console.Test.MockModels
 {
     internal class TestEmployeeService : IEmployeeService
     {
-        public Message AddEmployee(Employee employee)
+        public Message Create(EmployeeDto employee)
         {
             return new Message(ActionStatus.Success, "add");
         }
 
-        public Message DeleteEmployee(int id)
+        public Message Delete(int id)
         {
             return new Message(ActionStatus.Success, "delete");
         }
 
-        public Message GetAllEmployees()
+        public Message GetAll()
         {
             return new Message(ActionStatus.Success, "getall");
         }
@@ -25,7 +25,7 @@ namespace EmployeeManagement.Console.Test.MockModels
             return new Message(ActionStatus.Success, "get");
         }
 
-        public Message UpdateEmployee(Employee employee)
+        public Message UpdateEmployee(EmployeeDto employee)
         {
             return new Message(ActionStatus.Success, "update");
         }

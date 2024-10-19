@@ -1,6 +1,6 @@
 ﻿namespace EmployeeManagement.Domain.Models
 {
-    public class Employee
+    public class EmployeeDto
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -9,11 +9,11 @@
 
         public override bool Equals(object? obj)
         {
-            return Equals(obj as Employee);
+            return Equals(obj as EmployeeDto);
         }
 
 
-        public bool Equals(Employee? other)
+        public bool Equals(EmployeeDto? other)
         {
             return other != null &&
                    Id == other.Id &&

@@ -1,5 +1,7 @@
-﻿using EmployeeManagement.Data.Contexts.Interfaces;
+﻿using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Enums;
 using EmployeeManagement.Domain.Models;
+using EmployeeManagement.Domain.Repository;
 using EmployeeManagement.Domain.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -8,88 +10,78 @@ namespace EmployeeManagement.Domain.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IContext<Data.Entities.Employee> _context;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly ILogger<EmployeeService>? _logger;
 
-        public EmployeeService(IContext<Data.Entities.Employee> context, ILogger<EmployeeService>? logger = null)
+        public EmployeeService(IEmployeeRepository employeeRepository, ILogger<EmployeeService>? logger = null)
         {
-            _context = context;
+            _employeeRepository = employeeRepository;
             _logger = logger;
         }
 
         #region Service action
-        public Message AddEmployee(Employee employee)
+        public Message Create(EmployeeDto employeeDto)
         {
-            if (employee == null) throw new ArgumentNullException(nameof(employee));
+            if (employeeDto == null) throw new ArgumentNullException(nameof(employeeDto));
 
-            if(string.IsNullOrEmpty(employee.FirstName) || string.IsNullOrEmpty(employee.LastName) || employee.SalaryPerHour == null)
+            if(string.IsNullOrEmpty(employeeDto.FirstName) || string.IsNullOrEmpty(employeeDto.LastName) || employeeDto.SalaryPerHour == null)
             {
-                _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: not all data is filled for action!");
+                _logger?.LogWarning($"[{nameof(Create)}]: Warning: not all data is filled for action!");
                 return new Message(ActionStatus.NotSuccess, $"Warning: not all data is filled for action");
             }
 
             try
             {
-                var salaryDecimal = (decimal)employee.SalaryPerHour;
+                var salaryDecimal = (decimal)employeeDto.SalaryPerHour;
                 if (salaryDecimal < 0)
                 {
-                    _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
+                    _logger?.LogWarning($"[{nameof(Create)}]: Warning: Salary should be more than 0!");
                     return new Message(ActionStatus.NotSuccess, $"Warning: Salary should be more than 0");
                 }
 
-                var employeeEntity = new Data.Entities.Employee()
+                var employee = new Employee()
                 {
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
+                    FirstName = employeeDto.FirstName,
+                    LastName = employeeDto.LastName,
                     SalaryPerHour = salaryDecimal
                 };
 
-                employeeEntity = _context.AddEntity(employeeEntity);
-                _context.SaveChanges();
+                employee = _employeeRepository.Create(employee);
 
-                _logger?.LogInformation($"[{nameof(AddEmployee)}][Id = {employeeEntity.Id}]: Success!");
-                return new Message(ActionStatus.Success, $"Employee was added (Id = {employeeEntity.Id})");
+                _logger?.LogInformation($"[{nameof(Create)}][Id = {employee.Id}]: Success!");
+                return new Message(ActionStatus.Success, $"EmployeeDto was added (Id = {employee.Id})");
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"[{nameof(AddEmployee)}]: {ex.Message}", ex);
+                _logger?.LogError($"[{nameof(Create)}]: {ex.Message}", ex);
                 return new Message(ActionStatus.Error, "Error: action failed!");
             }
         }
 
-        public Message DeleteEmployee(int id)
+        public Message Delete(int id)
         {
             try
             {
-                if (_context.DeleteEntity(id))
-                {
-                    _context.SaveChanges();
-
-                    _logger?.LogInformation($"[{nameof(DeleteEmployee)}][Id = {id}]: Success!");
-                    return new Message(ActionStatus.Success, $"Employee with Id = {id} was deleted!");
-                }
-                else
-                {
-                    _logger?.LogWarning($"[{nameof(DeleteEmployee)}][Id = {id}]: Warning: no data available!");
-                    return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
-                }
+                _employeeRepository.DeleteById(id);
+                _logger?.LogInformation($"[{nameof(Delete)}][Id = {id}]: Success!");
+                return new Message(ActionStatus.Success, $"EmployeeDto with Id = {id} was deleted!");
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"[{nameof(DeleteEmployee)}][Id = {id}]: {ex.Message}", ex);
+                _logger?.LogError($"[{nameof(Delete)}][Id = {id}]: {ex.Message}", ex);
                 return new Message(ActionStatus.Error, "Error: action failed!");
             }
         }
 
-        public Message GetAllEmployees()
+        public Message GetAll()
         {
             try
             {
-                var employees = _context.GetAllEntities();
+                var employees = _employeeRepository.GetAll();
 
-                if (employees == null || employees?.Count() == 0)
+                if (employees == null || employees?.Count == 0)
                 {
-                    _logger?.LogWarning($"[{nameof(GetAllEmployees)}]: Warning: no data available!");
+                    _logger?.LogWarning($"[{nameof(GetAll)}]: Warning: no data available!");
                     return new Message(ActionStatus.NotSuccess, "Warning: no data available!");
                 }
                 else
@@ -100,13 +92,13 @@ namespace EmployeeManagement.Domain.Services
                         resultText.AppendLine(CreateEmployeeInfoStr(employee));
                     }
 
-                    _logger?.LogInformation($"[{nameof(GetAllEmployees)}]: Success!");
+                    _logger?.LogInformation($"[{nameof(GetAll)}]: Success!");
                     return new Message(ActionStatus.Success, resultText.ToString());
                 }
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"[{nameof(GetAllEmployees)}]: {ex.Message}", ex);
+                _logger?.LogError($"[{nameof(GetAll)}]: {ex.Message}", ex);
                 return new Message(ActionStatus.Error, "Error: action failed!");
             }
         }
@@ -115,7 +107,7 @@ namespace EmployeeManagement.Domain.Services
         {
             try
             {
-                var employee = _context.GetEntity(id);
+                var employee = _employeeRepository.GetById(id);
 
                 if (employee == null)
                 {
@@ -135,72 +127,73 @@ namespace EmployeeManagement.Domain.Services
             }
         }
 
-        public Message UpdateEmployee(Employee employee)
+        public Message UpdateEmployee(EmployeeDto employeeDto)
         {
-            if (employee == null) throw new ArgumentNullException(nameof(employee));
+            if (employeeDto == null) throw new ArgumentNullException(nameof(employeeDto));
 
             try
             {
-                var employeeEntity = _context.GetEntity(employee.Id);
-                if (employeeEntity != null)
+                var employee = _employeeRepository.GetById(employeeDto.Id);
+
+                if (employee != null)
                 {
                     bool wasChanges = false;
 
-                    if (!string.IsNullOrEmpty(employee.FirstName))
+                    if (!string.IsNullOrEmpty(employeeDto.FirstName))
                     {
                         wasChanges = true;
-                        employeeEntity.FirstName = employee.FirstName;
+                        employee.FirstName = employeeDto.FirstName;
                     }
 
-                    if (!string.IsNullOrEmpty(employee.LastName))
+                    if (!string.IsNullOrEmpty(employeeDto.LastName))
                     {
                         wasChanges = true;
-                        employeeEntity.LastName = employee.LastName;
+                        employee.LastName = employeeDto.LastName;
                     }
 
-                    if (employee.SalaryPerHour != null)
+                    if (employeeDto.SalaryPerHour != null)
                     {
-                        var salaryDecimal = (decimal)employee.SalaryPerHour;
+                        var salaryDecimal = (decimal)employeeDto.SalaryPerHour;
                         if (salaryDecimal < 0)
                         {
-                            _logger?.LogWarning($"[{nameof(AddEmployee)}]: Warning: Salary should be more than 0!");
+                            _logger?.LogWarning($"[{nameof(Create)}]: Warning: Salary should be more than 0!");
                             return new Message(ActionStatus.NotSuccess, $"Warning: Salary should be more than 0");
                         }
                         else
                         {
                             wasChanges = true;
-                            employeeEntity.SalaryPerHour = salaryDecimal;
+                            employee.SalaryPerHour = salaryDecimal;
                         }
                     }
 
                     if (wasChanges)
                     {
-                        _context.SaveChanges();
+                        _employeeRepository.Update(employee);
 
-                        _logger?.LogInformation($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Success!");
-                        return new Message(ActionStatus.Success, $"Employee with Id = {employeeEntity.Id} was updated!");
+                        _logger?.LogInformation($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: Success!");
+                        return new Message(ActionStatus.Success, $"EmployeeDto with Id = {employee.Id} was updated!");
                     }
                     else
                     {
-                        _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employeeEntity.Id}]: Warning: no data available!");
+                        _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: Warning: no data available!");
                         return new Message(ActionStatus.NotSuccess, $"Warning: no data available");
                     }
                 }
                 else
                 {
-                    _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: Warning: no updated data!");
+                    _logger?.LogWarning($"[{nameof(UpdateEmployee)}][Id = {employeeDto.Id}]: Warning: no updated data!");
                     return new Message(ActionStatus.NotSuccess, $"Warning: no updated data");
                 }
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"[{nameof(UpdateEmployee)}][Id = {employee.Id}]: {ex.Message}", ex);
+                _logger?.LogError($"[{nameof(UpdateEmployee)}][Id = {employeeDto.Id}]: {ex.Message}", ex);
                 return new Message(ActionStatus.Error, "Error: action failed!");
             }
         }
         #endregion
 
-        private string CreateEmployeeInfoStr(Data.Entities.Employee employee)
+        private string CreateEmployeeInfoStr(Employee employee)
         {
             var info = new StringBuilder();
 

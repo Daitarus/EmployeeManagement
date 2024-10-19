@@ -1,4 +1,6 @@
-﻿namespace EmployeeManagement.Domain.Models
+﻿using EmployeeManagement.Domain.Enums;
+
+namespace EmployeeManagement.Domain.Models
 {
     public class Message
     {
@@ -10,12 +12,5 @@
             Status = status;
             Text = text;
         }
-    }
-
-    public enum ActionStatus
-    {
-        Error,
-        Success,
-        NotSuccess
     }
 }
