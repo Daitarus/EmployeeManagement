@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Domain.Models;
+﻿using EmployeeManagement.Domain.Enums;
+using EmployeeManagement.Domain.Models;
 
 namespace EmployeeManagement.Console.Test.MockModelsCreators
 {

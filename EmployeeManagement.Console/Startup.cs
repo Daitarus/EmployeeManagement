@@ -5,8 +5,7 @@ using EmployeeManagement.Console.Commands.Factories;
 using EmployeeManagement.Console.Commands.Handler.Interfaces;
 using EmployeeManagement.Console.Commands.Handler;
 using EmployeeManagement.Console.Commands.Models;
-using EmployeeManagement.Data.Context;
-using EmployeeManagement.Data.Contexts.Interfaces;
+using EmployeeManagement.Data.Repositories;
 using EmployeeManagement.Data.Handlers.Interfaces;
 using EmployeeManagement.Data.Handlers;
 using EmployeeManagement.Domain.Models;
@@ -14,15 +13,16 @@ using EmployeeManagement.Domain.Services.Interfaces;
 using EmployeeManagement.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-
-using EmployeeEntity = EmployeeManagement.Data.Entities.Employee;
-using EmployeeModel = EmployeeManagement.Domain.Models.EmployeeDto;
 using EmployeeManagement.Console.Application.Interfaces;
 using EmployeeManagement.Console.Application;
 using Serilog;
 using Serilog.Extensions.Logging;
 using EmployeeManagement.Console.Settings;
 using Microsoft.Extensions.Logging;
+using EmployeeManagement.Domain.Repositories;
+using EmployeeManagement.Data.Contexts.Interfaces;
+using EmployeeManagement.Data.Context;
+using EmployeeManagement.Domain.Entities;
 
 namespace EmployeeManagement.Console
 {
@@ -47,10 +47,11 @@ namespace EmployeeManagement.Console
 
             services.AddSingleton<IRecorderHandler>(new JsonHandler(_appSettings.JsonHandlerPath));
 
-            services.AddSingleton<IContext<EmployeeEntity>, EmployeeContext>();
+            services.AddSingleton<IContext<Employee, int>, Context<Employee, int>>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             services.AddSingleton<IEmployeeService, EmployeeService>();
 
-            services.AddSingleton<IModelConverter<Command, EmployeeModel>, EmployeeConverter>();
+            services.AddSingleton<IModelConverter<Command, EmployeeDto>, EmployeeConverter>();
             services.AddSingleton<IModelConverter<Command, int>, IdConverter>();
             services.AddSingleton<IModelConverter<Message, string>, MessageConverter>();
 

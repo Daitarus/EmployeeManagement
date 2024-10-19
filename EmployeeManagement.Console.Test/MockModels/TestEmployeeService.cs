@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Domain.Models;
+﻿using EmployeeManagement.Domain.Enums;
+using EmployeeManagement.Domain.Models;
 using EmployeeManagement.Domain.Services.Interfaces;
 
 namespace EmployeeManagement.Console.Test.MockModels
