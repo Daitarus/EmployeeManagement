@@ -1,19 +1,18 @@
-﻿using EmployeeManagement.Data.Entities.Base;
+﻿using EmployeeManagement.Domain.Entities.Interfaces;
+using System.Numerics;
 
 namespace EmployeeManagement.Data.Contexts.Interfaces
 {
-    public interface IContext<T> where T : Entity
+    public interface IContext<TEntity, in T> where TEntity : IEntity<T> where T : struct, IIncrementOperators<T>
     {
-        public T AddEntity(T entity);
+        public TEntity AddEntity(TEntity entity);
 
-        public T? GetEntity(int id);
+        public TEntity? GetEntity(T id);
 
-        public IEnumerable<T> GetAllEntities();
+        public IEnumerable<TEntity> GetAllEntities();
 
-        public bool DeleteEntity(int id);
+        public void DeleteEntity(T id);
 
         public void SaveChanges();
-
-        public Task SaveChangesAsync();
     }
 }

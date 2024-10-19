@@ -1,7 +1,7 @@
 ﻿using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Enums;
 using EmployeeManagement.Domain.Models;
-using EmployeeManagement.Domain.Repository;
+using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Domain.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -79,7 +79,7 @@ namespace EmployeeManagement.Domain.Services
             {
                 var employees = _employeeRepository.GetAll();
 
-                if (employees == null || employees?.Count == 0)
+                if (employees == null || employees?.Count() == 0)
                 {
                     _logger?.LogWarning($"[{nameof(GetAll)}]: Warning: no data available!");
                     return new Message(ActionStatus.NotSuccess, "Warning: no data available!");
@@ -87,7 +87,7 @@ namespace EmployeeManagement.Domain.Services
                 else
                 {
                     var resultText = new StringBuilder();
-                    foreach (var employee in employees)
+                    foreach (var employee in employees!)
                     {
                         resultText.AppendLine(CreateEmployeeInfoStr(employee));
                     }
